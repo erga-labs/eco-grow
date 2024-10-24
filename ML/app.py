@@ -1,5 +1,5 @@
 
-from ML.dataset.db import get_record
+from ML.db import get_record
 from flask import Flask, request, jsonify
 import requests
 import pickle

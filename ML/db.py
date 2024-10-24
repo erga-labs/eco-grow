@@ -1,5 +1,5 @@
 
-from ML.dataset.secret import AppwriteSecrets
+from ML.secret import AppwriteSecrets
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 

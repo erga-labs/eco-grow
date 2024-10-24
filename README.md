@@ -4,10 +4,10 @@
 EcoGrow is an innovative smart agriculture system that leverages edge computing, machine learning, and IoT technologies to provide real-time environmental monitoring and forecasting for precision farming. By integrating LSTM neural networks on Raspberry Pi devices, the system offers farmers accurate, timely data to optimize irrigation, fertilization, and other critical agricultural practices.
 
 ## Team Members
-- Nishumbh Shah (DY22ENGU0AID067)
-- Siddharth Sahani (DY22ENGU0AID046)
-- Luqmaan Shaikh (DY22ENGU0AID069)
-- Dev Tangadi (DY22ENGU0AID081)
+- Nishumbh Shah (22AD1006)
+- Siddharth Sahani (22AD1046)
+- Luqmaan Shaikh (22AD1009)
+- Dev Tangadi (22AD1070)
 
 ## Problem Statement
 Agricultural productivity heavily depends on environmental conditions, which are often unpredictable. Traditional methods of data collection and analysis are:
@@ -22,21 +22,19 @@ Agricultural productivity heavily depends on environmental conditions, which are
 
 ## Key Features
 - **Edge Computing**: Utilizes ESP32 devices for on-site data processing
-- **Machine Learning**: Implements LSTM neural networks for accurate time series forecasting
 - **MLOps Integration**: Features CI/CD pipeline for streamlined model deployment
 - **Real-time Monitoring**: Provides continuous environmental data collection and analysis
 - **Scalable Architecture**: Designed to accommodate additional sensors and devices
 
 ## Technology Stack
 - **Hardware**: ESP32 devices with environmental sensors
-- **ML Framework**: TensorFlow Lite
 - **Programming Languages**: Python (primary)
-- **Application Frameword**: TBD
+- **Application Frameword**: Expo JS
 
 ## Methodology
 1. **Data Collection**: Gather environmental data using distributed sensor network
 2. **Data Processing**: Clean and normalize sensor data for model training
-3. **Model Development**: Train LSTM models for time series forecasting
+3. **Model Development**: Train models for time series forecasting
 4. **Continuous Improvement**: Implement MLOps practices for regular updates
 
 ## Expected Outcomes

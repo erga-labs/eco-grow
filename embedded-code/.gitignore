@@ -1,0 +1,10 @@
+
+# vscode configs
+.vscode/
+
+# platformio directory
+.pio/
+
+# secrets
+include/secrets.h
+

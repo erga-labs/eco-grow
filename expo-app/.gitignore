@@ -1,0 +1,46 @@
+
+.expo
+.vscode
+node_modules
+bun.lockb
+yarn-error.log
+yarn.lock
+package-lock.json
+
+# Web
+web-build
+web-report
+
+# Electron
+dist
+
+# Gatsby
+.cache
+with-gatsby/public
+
+# Next.js
+.next
+with-nextjs/out
+
+# Native
+*/ios/Pods
+
+# Websockets
+*/backend/.env
+
+# local env files
+*/.env*.local
+
+
+.DS_Store
+report.html
+
+# Maintenance logs
+.sdk-upgrade-logs
+.sdk-fix-logs
+
+
+/with-router-menus/ios
+/with-router-menus/android
+/with-canary-react-19/ios
+/with-canary-react-19/android

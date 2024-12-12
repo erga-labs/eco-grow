@@ -77,11 +77,14 @@ Agricultural productivity is complex and depends on multiple interrelated factor
 - Integrated agricultural intelligence platform
 - Real-time predictive analytics
 
-## Technical Challenges
-- Developing accurate time series forecasting models
-- Creating robust crop disease detection algorithms
-- Ensuring low-latency edge computing
-- Designing intuitive user interfaces for farmers
+# Directory Structure
+The EcoGrow project is organized into the following three main folders:
+
+- `embedded-code`: Contains the code and configuration for the ESP32-based embedded system.
+- `expojs-app`: Holds the files for the Expo.js-based mobile application.
+- `ml-models`: Includes the machine learning models and related files.
+
+Each of these folders has its own dedicated branch in the Git repository, allowing for independent development and collaboration on the various components of the EcoGrow system.
 
 ## References
 1. [Time Series Linear Forecasting for precise irrigation](https://ieeexplore.ieee.org/abstract/document/10454662)

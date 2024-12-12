@@ -1,0 +1,17 @@
+
+# different ways of naming python environments
+env/
+venv/
+.venv/
+
+# vscode config
+.vscode/
+
+# python imports cache
+__pycache__/
+
+# directory where we store our model
+models/
+
+# file containing api keys
+secret.py

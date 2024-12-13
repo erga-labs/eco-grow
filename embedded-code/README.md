@@ -28,8 +28,8 @@ Embedded systems implementation for the EcoGrow Smart Agriculture System using P
    ```
 
 ## Configuration
-- Sensor configuration at ```config.example.h```
-- Environment configuration at ```secrets.example.h```
+- Sensor configuration at ```.example/pins.h```
+- Environment configuration at ```.example/secrets.h```
 
 ## Build and Upload
 - Build the project:

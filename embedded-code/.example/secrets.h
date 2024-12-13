@@ -1,0 +1,9 @@
+#define WIFI_SSID 
+#define WIFI_PASSWORD 
+#define POCKETBASE_HOST 
+#define PB_COLLECTION_ID 
+#define PB_FIELD_ID 
+#define OTA_SERVER_URL 
+#define OTA_API_KEY 
+#define OTA_VERSION_CHECK_URL 
+#define CURRENT_VERSION "1.0.0"

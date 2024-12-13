@@ -6,5 +6,6 @@
 #include <Update.h>
 #include "secrets.h"  
 bool performOTAUpdate();
+bool checkOTAUpdate();
 
 #endif

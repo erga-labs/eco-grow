@@ -4,25 +4,22 @@
 Machine learning models for the EcoGrow Smart Agriculture System focusing on crop prediction, management, and health detection.
 
 ## Environment Setup
-- Python 3.12
+- Recent version of python 3 (tested on 3.12)
 - Virtual Environment Recommended
+- Uses keras with pytorch as its backend
 
 ## Installation
 1. Clone the repository
 2. Create virtual environment:
    ```bash
-   python3.12 -m venv venv
+   python3 -m venv venv
    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
 
 ## Project Structure
-- `models/`: Machine learning model implementations
 - `dataset/`: Dataset storage
+- `saved-models/`: After training, models are stored here
+- `*.ipynb`: Each notebook has implementation for its model
 
 ## Models
 
@@ -39,29 +36,6 @@ Machine learning models for the EcoGrow Smart Agriculture System focusing on cro
 3. **Crop Health Detection**
    - Image-based disease identification
    - Convolutional Neural Network (CNN) implementation
-
-## Training and Evaluation
-- run `model.ipynb`
-<!-- 
-## API Deployment
-- FastAPI for model serving
-- Run API server:
-  ```bash
-  uvicorn main:app --reload
-  ``` -->
-
-## Environment Variables
-Use `secrets.example.py` to get environment variables
-
-## Logging and Monitoring
-- Uses Python logging
-
-## Contributing
-1. Fork the repository
-2. Create feature branch
-3. Commit changes
-4. Push to branch
-5. Create Pull Request
 
 ## Licensing
 Refer to the project's main LICENSE file

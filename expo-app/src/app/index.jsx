@@ -2,11 +2,16 @@ import { Link } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Pressable } from "react-native";
+import { useRouter } from "expo-router";
+
 
 export default function Page() {
+
   return (
-    <View className="flex flex-1">
-      <Header />
+    
+    <View className="flex flex-1 bg-background justify-center items-center">
+      {/* <Header /> */}
       <Content />
       <Footer />
     </View>
@@ -14,6 +19,9 @@ export default function Page() {
 }
 
 function Content() {
+
+
+  const router = useRouter();
   return (
     <View className="flex-1">
       <View className="py-12 md:py-24 lg:py-32 xl:py-48">
@@ -23,26 +31,31 @@ function Content() {
               role="heading"
               className="text-3xl text-center native:text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl"
             >
-              Welcome to Project ACME
+            Eco-Grow
             </Text>
-            <Text className="mx-auto max-w-[700px] text-lg text-center text-gray-500 md:text-xl dark:text-gray-400">
-              Discover and collaborate on acme. Explore our services now.
+            <Text className="mx-auto max-w-[700px] text-l text-center md:text-xl">
+              Revolutionizing Agriculture with Smart IoT Solutions for a Sustainable Future
             </Text>
 
-            <View className="gap-4">
-              <Link
-                suppressHighlighting
-                className="flex h-9 items-center justify-center overflow-hidden rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 web:shadow ios:shadow transition-colors hover:bg-gray-900/90 active:bg-gray-400/90 web:focus-visible:outline-none web:focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                href="/"
-              >
-                Explore
-              </Link>
+            <View className="gap-4 flex flex-col items-center py-24">
+            <Pressable onPress={() => temp(router)} className="flex items-center justify-center bg-primary rounded-lg font-medium">
+              <View className="flex h-9 items-center justify-center overflow-hidden rounded-md px-4 py-2 text-sm text-white font-medium">
+                <Text className="text-background">Explore</Text>
+              </View>
+            </Pressable>
             </View>
           </View>
         </View>
       </View>
     </View>
   );
+}
+
+// Temporary function to test routing
+// Will be removed in the final version
+function temp(router){
+  router.push("about");
+  console.log("clicked");
 }
 
 function Header() {

@@ -6,7 +6,15 @@ module.exports = {
   ],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'text': '#040316',
+        'background': '#e6e6e6',
+        'primary': '#27625c',
+        'secondary': '#6a9587',
+        'accent': '#abd3bb',
+       },       
+    },
   },
   future: {
     hoverOnlyWhenSupported: true,

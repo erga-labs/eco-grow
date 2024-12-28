@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+
+    --background: #f2f2f2;
+    --primary: #49b6ab; 
+    --secondary: #6a9587;
+    --accent: #58a778; 
+  }
+
+  .dark {
+    --text: #eae9fc;
+    --background: #0d0d0d; 
+    --primary: #edf8f7;
+    --secondary: #f0f4f3;
+    --accent: #eef6f1; 
+  }
+}

@@ -5,7 +5,7 @@ EcoGrow is an innovative smart agriculture system that leverages edge computing,
 
 ## Team Members
 - Nishumbh Shah (DY22ENGU0AID067)
-- Siddharth Sahani (DY22ENGU0AID046)
+- Siddharth Sahani (DY22ENGU0AID063)
 - Luqmaan Shaikh (DY22ENGU0AID069)
 - Dev Tangadi (DY22ENGU0AID081)
 

@@ -1,5 +1,6 @@
 #include "api.h"
 #include "secrets.h"
+#include <PubSubClient.h>
 
 bool sendData(const String& sensorData) {
     if (WiFi.status() != WL_CONNECTED) {
@@ -44,4 +45,37 @@ void exampleSensorDataSend() {
     } else {
         Serial.println("Failed to send sensor data");
     }
+}
+
+void sendSensorMQTT(const String& data){
+
+    if (WiFi.status() != WL_CONNECTED) {
+        Serial.println("WiFi not connected. Cannot send sensor data.");
+        return;
+    }
+
+    WiFiClient espClient;
+    PubSubClient client(espClient);
+    client.setCallback(callback);
+    client.setServer(MQTT_SERVER, MQTT_PORT);
+    
+    if (!client.connect("ESP32Client", MQTT_USER, MQTT_PASSWORD)) {
+        Serial.println("Failed to connect to MQTT server");
+        return;
+    }
+
+    client.publish("sensor_data", data.c_str());
+    client.disconnect();
+    Serial.println("Sensor data sent via MQTT");
+
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+    Serial.print("Message arrived [");
+    Serial.print(topic);
+    Serial.print("] ");
+    for (int i = 0; i < length; i++) {
+        Serial.print((char)payload[i]);
+    }
+    Serial.println();
 }

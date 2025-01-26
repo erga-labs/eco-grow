@@ -1,16 +1,14 @@
-#include "ota.h"
 #include <WiFi.h>
 #include "secrets.h"
-#include "api.h"
-#include <DHT.h>
 #include "pins.h"
+#include <PubSubClient.h>
+#include <WiFiClientSecure.h>
+#include <ArduinoJson.h>
 
-unsigned long lastOTACheckTime = 0;
-unsigned long lastDataSendTime = 0;
-const unsigned long OTA_CHECK_INTERVAL = 60 * (60 * 1000);       // 1 hour
-const unsigned long DATA_SEND_INTERVAL = 3  * (60 * 1000);        // 3 minutes
+WiFiClient wifi;
+PubSubClient mqttClient(wifi);
+char msg[20];
 
-DHT dht;
 
 void connectToWiFi()
 {
@@ -22,74 +20,91 @@ void connectToWiFi()
     }
     Serial.println("\nWi-Fi Connected.");
     Serial.println(WiFi.localIP());
+    Serial.println(WiFi.broadcastIP());
+}
+
+void callback(char* topic, byte* message, unsigned int length) {
+  Serial.print("Message arrived on topic: ");
+  Serial.print(topic);
+  Serial.print(". Message: ");
+  String messageTemp;
+  
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)message[i]);
+    messageTemp += (char)message[i];
+  }
+  Serial.println();
+}
+
+
+void reconnectMQTT() {
+  while (!mqttClient.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    // Attempt to connect with username and password
+    if (mqttClient.connect("ESP8266Client", "test", "test")) {
+      Serial.println("connected");
+      mqttClient.subscribe("test/sensordata");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(mqttClient.state());
+      Serial.println(" try again in 5 seconds");
+      delay(5000);
+    }
+  }
+}
+
+void sendDummyMQTT(){
+    float randomTemperature = random(15, 35) + random(0, 99) / 100.0; // Random between 15.00 and 35.99
+    float randomHumidity = random(30, 80) + random(0, 99) / 100.0;    // Random between 30.00 and 80.99
+    int randomN = random(10, 50);  // Random N value between 10 and 50
+    int randomP = random(5, 30);   // Random P value between 5 and 30
+    int randomK = random(10, 40);  // Random K value between 10 and 40
+    String key = "your_key_here";  // Replace with the desired key
+
+    // Create a JSON object
+    StaticJsonDocument<100> jsonDoc;
+    jsonDoc["n"] = randomN;
+    jsonDoc["p"] = randomP;
+    jsonDoc["k"] = randomK;
+    jsonDoc["humidity"] = randomHumidity;
+    jsonDoc["temp"] = randomTemperature;
+    jsonDoc["key"] = key;
+
+    // Serialize JSON object to a string
+    char jsonString[256];
+    serializeJson(jsonDoc, jsonString);
+
+    // Print and publish the JSON payload
+    Serial.print("JSON Payload: ");
+    Serial.println(jsonString);
+    mqttClient.publish("esp32/sensordata", jsonString);
 }
 
 void setup()
 {
     Serial.begin(115200);
     connectToWiFi();
-    pinMode(WATER_AO, INPUT);
-    pinMode(WATER_DO, INPUT);
+    mqttClient.setServer(MQTT_BROKER, MQTT_PORT);
+    mqttClient.setCallback(callback);
+    mqttClient.connect("ESP8266Client", "test", "test");
 
-    pinMode(DHT_AO, INPUT);
-
-    dht.setup(DHT_AO);
 }
 
 void loop()
 {
-
-    int AOValue = analogRead(WATER_AO);
-    int DOValue = digitalRead(WATER_DO);
-
-    Serial.print("Analog Value: ");
-    Serial.println(AOValue);
-    Serial.print("Digital Value: ");
-    Serial.println(DOValue);
-
-    float humidity = dht.getHumidity();
-    float temperature = dht.getTemperature();
-
-    if (isnan(humidity) || isnan(temperature))
-    {
-        Serial.println("Failed to read from DHT sensor!");
-    }
-    else
-    {
-        Serial.print("Humidity: ");
-        Serial.print(humidity);
-        Serial.print("%, Temperature: ");
-        Serial.print(temperature);
-        Serial.println("°C");
+    if (WiFi.status() != WL_CONNECTED){
+        connectToWiFi();
+        return;
     }
 
-
-    unsigned long currentTime = millis();
-
-    // Check for OTA update once an hour
-    if (currentTime - lastOTACheckTime >= OTA_CHECK_INTERVAL) {
-        if (WiFi.status() == WL_CONNECTED) {
-            if ((checkOTAUpdate())) {
-                if (performOTAUpdate()) {
-                    // OTA update successful, device will restart
-                }
-            }
-        } else {
-            connectToWiFi();
-        }
-        lastOTACheckTime = currentTime;
+    if (!mqttClient.connected()){
+        reconnectMQTT();
+        return;
     }
 
-    // Send sensor data every 3 minutes
-    if (currentTime - lastDataSendTime >= DATA_SEND_INTERVAL) {
-        if (WiFi.status() == WL_CONNECTED) {
-            exampleSensorDataSend();
-        } else {
-            connectToWiFi();
-        }
-        lastDataSendTime = currentTime;
-    }
+    mqttClient.loop();
 
-    // Small delay to prevent tight looping
-    delay(2000);
+    sendDummyMQTT();
+
+    delay(10000);
 }

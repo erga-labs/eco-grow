@@ -11,7 +11,10 @@ venv/
 __pycache__/
 
 # directory where we store our model
-models/
+saved-models/
 
 # file containing api keys
 secret.py
+
+# dataset
+dataset/

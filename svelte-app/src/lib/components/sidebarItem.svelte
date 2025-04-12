@@ -1,9 +1,19 @@
 <script>
     import { Cpu } from '@lucide/svelte';
-    const { onCpuCLick } = $props();
-</script>
+    import { createEventDispatcher } from 'svelte';
     
-
-<button class="aspect-square w-full bg-green-500 p-2 rounded-md border-2 border-green-300">
-    <Cpu onclick={onCpuCLick}/> 
-</button>
+    const dispatch = createEventDispatcher();
+    
+    // Add isSelected prop to track selection state
+    // export let id = null;
+    export let isSelected = false;
+  </script>
+    
+  <button 
+    class="aspect-square w-full bg-green-500 p-2 rounded-md 
+      {isSelected ? 'border-2 border-blue-800' : 'border-2 border-green-300'} 
+      transition-all duration-200"
+    on:click={() => dispatch('click')}
+  >
+    <Cpu />
+  </button>

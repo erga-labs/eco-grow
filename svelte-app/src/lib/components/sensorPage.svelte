@@ -15,11 +15,11 @@
     <div class="flex gap-4 md:flex-col md:gap-8 lg:flex-row">
         <div
             class="h-full w-1/2 flex-3/4 rounded-l bg-amber-50
-                    px-3 md:h-1/2 md:w-1/2"
+                    px-3 md:h-1/2 md:w-full"
         >
             <GraphComponent />
         </div>
-        <div class="flex h-full w-1/2 flex-col gap-8">
+        <div class="flex h-full w-1/2 flex-col gap-8 md:w-full">
             <PlantInformation />
             <CropRecommendation />
         </div>

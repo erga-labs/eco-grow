@@ -1,5 +1,4 @@
-const csvNortheast = 
-  `Year,Population
+const csvNortheast = `Year,Population
   1920,29.662053
   1930,34.427091
   1940,35.976777
@@ -12,8 +11,7 @@ const csvNortheast =
   2010,55.317240
   2020,57.609148`;
 
-const csvMidwest = 
-  `Year,Population
+const csvMidwest = `Year,Population
   1920,34.019792
   1930,38.594100
   1940,40.143332
@@ -26,8 +24,7 @@ const csvMidwest =
   2010,66.927001
   2020,68.985454`;
 
-const csvSouth = 
-  `Year,Population
+const csvSouth = `Year,Population
   1920,33.125803
   1930,37.857633
   1940,41.665901
@@ -40,8 +37,7 @@ const csvSouth =
   2010,114.555744
   2020,126.266107`;
 
-const csvWest = 
-  `Year,Population
+const csvWest = `Year,Population
   1920,9.213920
   1930,12.323836
   1940,14.379119
@@ -55,11 +51,15 @@ const csvWest =
   2020,78.588572`;
 
 function csvConvert(csv) {
-  return csv.split('\n').slice(1).map(str => {
-    const [date, population] = str.split(',')
-    .map((el) => (el > 1900 ? new Date(el, 0) : parseFloat(el)));
-    return { date, population };
-  });
+    return csv
+        .split("\n")
+        .slice(1)
+        .map((str) => {
+            const [date, population] = str
+                .split(",")
+                .map((el) => (el > 1900 ? new Date(el, 0) : parseFloat(el)));
+            return { date, population };
+        });
 }
 const northeast = csvConvert(csvNortheast);
 const midwest = csvConvert(csvMidwest);
@@ -67,20 +67,20 @@ const south = csvConvert(csvSouth);
 const west = csvConvert(csvWest);
 
 export default [
-  {
-    id: 'Northeast',
-    data: northeast
-  },
-  {
-    id: 'Midwest',
-    data: midwest
-  },
-  {
-    id: 'South',
-    data: south
-  },
-  {
-    id: 'West',
-    data: west
-  }
-]
+    {
+        id: "Northeast",
+        data: northeast,
+    },
+    {
+        id: "Midwest",
+        data: midwest,
+    },
+    {
+        id: "South",
+        data: south,
+    },
+    {
+        id: "West",
+        data: west,
+    },
+];

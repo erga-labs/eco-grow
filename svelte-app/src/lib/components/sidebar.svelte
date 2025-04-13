@@ -1,5 +1,5 @@
 <script>
-    import SidebarItem from "./sidebarItem.svelte";
+    import SidebarItem from "./SidebarItem.svelte";
     import { CircleUserRound } from "@lucide/svelte";
 
     export let ids = [];

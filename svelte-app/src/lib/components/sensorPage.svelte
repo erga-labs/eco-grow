@@ -1,5 +1,5 @@
 <script>
-    import GraphComponent from "$lib/components/sensor/graphComponent.svelte";
+    import GraphComponent from "$lib/components/sensor/GraphComponent.svelte";
     import PlantInformation from "$lib/components/sensor/PlantInformation.svelte";
     export let selectedSensor = "";
 </script>

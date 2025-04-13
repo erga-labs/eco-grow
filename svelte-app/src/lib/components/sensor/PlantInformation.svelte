@@ -1,5 +1,5 @@
 <script>
-    import { getNutrientsForCrop } from "$lib/functions";
+    import { getNutrientsForCrop } from "$lib/server/functions";
 
     let selectedCrop = $state("tomato");
     let nutrients = $derived(getNutrientsForCrop(selectedCrop));

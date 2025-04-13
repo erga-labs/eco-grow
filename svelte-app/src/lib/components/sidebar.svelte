@@ -18,11 +18,7 @@
     <div class="flex h-full flex-col items-center justify-between py-4">
         <div class="flex flex-col gap-4">
             {#each ids as id}
-                <SidebarItem
-                    {id}
-                    isSelected={id === selectedId}
-                    on:click={() => handleCpuClick(id)}
-                />
+                <SidebarItem {id} isSelected={id === selectedId} on:click={() => handleCpuClick(id)} />
             {/each}
         </div>
         <div

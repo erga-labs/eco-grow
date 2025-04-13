@@ -55,9 +55,7 @@ function csvConvert(csv) {
         .split("\n")
         .slice(1)
         .map((str) => {
-            const [date, population] = str
-                .split(",")
-                .map((el) => (el > 1900 ? new Date(el, 0) : parseFloat(el)));
+            const [date, population] = str.split(",").map((el) => (el > 1900 ? new Date(el, 0) : parseFloat(el)));
             return { date, population };
         });
 }

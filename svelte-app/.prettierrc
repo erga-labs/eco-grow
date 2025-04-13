@@ -3,5 +3,6 @@
     "overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }],
 
     "endOfLine": "auto",
-    "tabWidth": 4
+    "tabWidth": 4,
+    "printWidth": 120
 }

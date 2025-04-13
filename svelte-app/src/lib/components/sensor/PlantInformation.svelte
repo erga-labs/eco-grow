@@ -1,16 +1,16 @@
 <script>
     let nutrients = [
-        { key: "N", label: "N", tooltip: "Nitrogen", color: "bg-red-600" },
+        { key: "Nitrogen", label: "Nitrogen", tooltip: "Nitrogen", color: "bg-red-600" },
         {
-            key: "P",
-            label: "P",
+            key: "Phosphorus",
+            label: "Phosphorus",
             tooltip: "Phosphorus",
             color: "bg-emerald-800",
         },
-        { key: "K", label: "K", tooltip: "Potassium", color: "bg-emerald-800" },
+        { key: "Potassium", label: "Potassium", tooltip: "Potassium", color: "bg-emerald-800" },
         {
-            key: "M%",
-            label: "M%",
+            key: "Moisture %",
+            label: "Moisture %",
             tooltip: "Moisture %",
             color: "bg-emerald-800",
         },
@@ -28,36 +28,29 @@
     }
   </style> -->
 
-<div class="w-fit rounded-lg bg-gray-200 p-4">
+<div class="w-full rounded-lg bg-gray-200 p-8">
     <h2 class="mb-2 font-semibold">Plant Information</h2>
 
     <div class="flex flex-col gap-4 rounded-md bg-gray-300 p-4">
         <!-- Plant Dropdown -->
-        <div class="flex items-center justify-start gap-2">
-            <select
-                bind:value={selectedPlant}
-                class="rounded bg-green-200 px-4 py-2 shadow"
-            >
+        <div class="flex h-12 items-center justify-start gap-2">
+            <div class="w-fit pr-4 text-xl whitespace-nowrap">Choose Plant:</div>
+            <select bind:value={selectedPlant} class="w-full rounded bg-green-200 px-4 py-2 text-center shadow">
                 {#each plants as plant}
                     <option value={plant}>{plant}</option>
                 {/each}
-                <!-- Add more options as needed -->
             </select>
         </div>
 
         <div class="flex gap-3">
             <!-- Nutrient Buttons -->
             {#each nutrients as nutrient (nutrient.key)}
-                <div class="group relative">
-                    <button
-                        class={`h-12 w-12 rounded font-bold text-white ${nutrient.color}`}
-                    >
+                <div class="grow">
+                    <button class={`h-full w-full rounded-xl font-bold text-white ${nutrient.color}`}>
                         {nutrient.label}
                     </button>
                     <!-- Tooltip -->
-                    <div
-                        class="tooltip opacity-0 transition group-hover:opacity-100"
-                    >
+                    <div class="tooltip opacity-0 transition group-hover:opacity-100">
                         {nutrient.label}
                     </div>
                 </div>

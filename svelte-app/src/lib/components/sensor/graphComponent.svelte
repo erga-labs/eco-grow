@@ -111,11 +111,7 @@
         });
     }
 
-    const pointsScaled = points.map((el) => [
-        xScale(el.x),
-        yScale(el.y),
-        el.color,
-    ]);
+    const pointsScaled = points.map((el) => [xScale(el.x), yScale(el.y), el.color]);
     const delaunayGrid = Delaunay.from(pointsScaled);
     const voronoiGrid = delaunayGrid.voronoi([0, 0, width, height]);
 
@@ -154,9 +150,7 @@
                     <path
                         class="line"
                         fill={colors[i]}
-                        fill-opacity={points[dotInfo[1]].color === i
-                            ? "0.5"
-                            : "0.1"}
+                        fill-opacity={points[dotInfo[1]].color === i ? "0.5" : "0.1"}
                         stroke={colors[i]}
                         d={subsetArea}
                     />
@@ -184,65 +178,32 @@
 
         <!-- Y-Axis -->
         <g class="pointer-events-none" transform="translate({marginLeft}, 0)">
-            <path
-                class="stroke-black"
-                d="M{insetLeft}, {marginTop} V{height - marginBottom + 6}"
-            />
+            <path class="stroke-black" d="M{insetLeft}, {marginTop} V{height - marginBottom + 6}" />
             {#each yTicks as tick}
-                <g
-                    transform="translate(0, {yScale(tick)})"
-                    class="font-sans text-[10px] text-black"
-                >
-                    <line
-                        x1={insetLeft - 6}
-                        x2={insetLeft}
-                        class="stroke-black"
-                    />
+                <g transform="translate(0, {yScale(tick)})" class="font-sans text-[10px] text-black">
+                    <line x1={insetLeft - 6} x2={insetLeft} class="stroke-black" />
                     {#if horizontalGrid}
-                        <line
-                            x1={insetLeft}
-                            x2={width - marginLeft - marginRight}
-                            class="stroke-black opacity-20"
-                        />
+                        <line x1={insetLeft} x2={width - marginLeft - marginRight} class="stroke-black opacity-20" />
                     {/if}
-                    <text x="-{marginLeft}" y="5" class="text-black"
-                        >{tick + yFormat}</text
-                    >
+                    <text x="-{marginLeft}" y="5" class="text-black">{tick + yFormat}</text>
                 </g>
             {/each}
-            <text x="-{marginLeft}" y={marginTop - 10} class="text-black"
-                >{yLabel}</text
-            >
+            <text x="-{marginLeft}" y={marginTop - 10} class="text-black">{yLabel}</text>
         </g>
 
         <!-- X-Axis -->
-        <g
-            class="pointer-events-none"
-            transform="translate(0,{height - marginBottom - insetBottom})"
-        >
-            <path
-                class="stroke-black"
-                d="M{marginLeft},0.5 H{width - marginRight}"
-            />
+        <g class="pointer-events-none" transform="translate(0,{height - marginBottom - insetBottom})">
+            <path class="stroke-black" d="M{marginLeft},0.5 H{width - marginRight}" />
             {#each xTicks as tick, i}
-                <g
-                    transform="translate({xScale(tick)}, 0)"
-                    class="font-sans text-[10px] text-black"
-                >
+                <g transform="translate({xScale(tick)}, 0)" class="font-sans text-[10px] text-black">
                     <line y2="6" class="stroke-black" />
                     {#if verticalGrid}
                         <line y2={-height} class="stroke-black opacity-20" />
                     {/if}
-                    <text x={-marginLeft / 4} y="20" class="text-black"
-                        >{xTicksFormatted[i] + xFormat}</text
-                    >
+                    <text x={-marginLeft / 4} y="20" class="text-black">{xTicksFormatted[i] + xFormat}</text>
                 </g>
             {/each}
-            <text
-                x={width - marginLeft - marginRight - 40}
-                y={marginBottom}
-                class="text-black">{xLabel}</text
-            >
+            <text x={width - marginLeft - marginRight - 40} y={marginBottom} class="text-black">{xLabel}</text>
         </g>
 
         <!-- Voronoi interaction overlay -->
@@ -272,8 +233,6 @@
       "
     >
         {subsets ? subsets[points[dotInfo[1]].color] : ""}:
-        {points[dotInfo[1]].x.getFullYear()}: {points[dotInfo[1]].y.toFixed(
-            2,
-        )}{yFormat}
+        {points[dotInfo[1]].x.getFullYear()}: {points[dotInfo[1]].y.toFixed(2)}{yFormat}
     </div>
 {/if}

@@ -14,7 +14,7 @@
     }
 </script>
 
-<div class="h-full w-auto bg-red-300 px-2.5">
+<div class="fixed h-screen w-14 bg-red-300 px-2.5">
     <div class="flex h-full flex-col items-center justify-between py-4">
         <div class="flex flex-col gap-4">
             {#each ids as id}

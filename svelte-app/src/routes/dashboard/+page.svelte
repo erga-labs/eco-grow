@@ -11,10 +11,10 @@
     };
 </script>
 
-<div class="flex h-full">
+<div class="flex h-screen">
     <Sidebar {ids} onCpuClick={handleCpuClick} />
 
-    <div class="h-full w-full p-2">
+    <div class="h-full w-full py-2 pr-2 pl-16">
         <SensorPage {selectedSensor} />
     </div>
 </div>

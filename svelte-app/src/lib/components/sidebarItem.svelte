@@ -10,8 +10,8 @@
 </script>
 
 <button
-    class="aspect-square w-full rounded-md bg-green-500 p-2
-      {isSelected ? 'border-2 border-blue-800' : 'border-2 border-green-300'} 
+    class="flex aspect-square w-full items-center justify-center rounded-md bg-green-500 p-2
+      {isSelected ? 'border-4 border-indigo-600' : 'border-4 border-green-300'} 
       transition-all duration-200"
     on:click={() => dispatch("click")}
 >

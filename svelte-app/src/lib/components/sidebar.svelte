@@ -5,7 +5,6 @@
   export let ids = [];
   export let onCpuClick;
   
-  // Add a variable to track the currently selected ID
   let selectedId = null;
   
   // Function to handle when a CPU is clicked

@@ -1,6 +1,6 @@
 <script>
     import GraphComponent from '$lib/components/sensor/graphComponent.svelte';
-
+    import PlantInformation from '$lib/components/sensor/PlantInformation.svelte';
     export let selectedSensor = '';
 </script>
   
@@ -11,9 +11,17 @@
     </p>
 
     <!-- Graph wrapper: 1/2 screen on md+, full screen on small -->
-    <div class="w-full h-full bg-amber-50 px-3 
-                md:w-1/2 md:h-1/2 md:my-12 rounded-l">
-        <GraphComponent />
+    <div class="flex lg:flex-row gap-4 md:gap-8 md:flex-col">
+    
+        <div class="w-full h-full bg-amber-50 px-3 
+                    md:w-1/2 md:h-1/2 rounded-l">
+            <GraphComponent />
+        </div>
+    
+        <div class="w-full md:w-1/2 md:h-1/2 h-full">
+            <PlantInformation />
+        </div>
+        
     </div>
 </div>
 

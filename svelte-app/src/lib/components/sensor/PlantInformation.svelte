@@ -1,7 +1,7 @@
 <script>
-    import { getNutrientsForCrop } from "$lib/server/functions";
+    import { getNutrientsForCrop } from "$lib/functions";
 
-    let selectedCrop = $state("tomato");
+    let selectedCrop = $state("Tomato");
     let nutrients = $derived(getNutrientsForCrop(selectedCrop));
 </script>
 
@@ -12,7 +12,7 @@
         <div class="flex h-12 items-center justify-start gap-2">
             <div class="w-fit pr-4 text-lg font-semibold whitespace-nowrap">Choose Plant:</div>
             <select bind:value={selectedCrop} class="w-full max-w-40 rounded bg-green-200 px-4 py-2 text-center shadow">
-                {#each ["tomato", "apple"] as plant}
+                {#each ["Tomato", "Apple"] as plant}
                     <option value={plant}>{plant}</option>
                 {/each}
             </select>
@@ -22,18 +22,14 @@
             {#each Object.entries(nutrients) as [nutrientName, nutrientData]}
                 <div class="h-auto grow">
                     <div
-                        class={`h-full w-full rounded-xl text-center transition ${nutrientData.ok ? "bg-green-500" : "bg-red-500"} py-1`}
+                        class={`h-full w-full rounded-xl border-3 text-center transition ${nutrientData.ok ? "border-emerald-500 bg-emerald-400" : "border-orange-500 bg-orange-400"} py-1`}
                     >
                         <div class="text-lg font-bold capitalize">{nutrientName}</div>
-                        {#if nutrientData.ok}
-                            <div class="font-lg">ALL OK</div>
-                        {:else}
-                            <div class="flex flex-col">
-                                {#each ["current", "optimal"] as key}
-                                    <div class="capitalize">{key}: {nutrientData[key]}</div>
-                                {/each}
-                            </div>
-                        {/if}
+                        <div class="flex">
+                            {#each ["current", "optimal"] as key}
+                                <div class="grow capitalize">{key}: {nutrientData[key]}</div>
+                            {/each}
+                        </div>
                     </div>
                 </div>
             {/each}

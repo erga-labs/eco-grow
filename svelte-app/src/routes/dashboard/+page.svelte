@@ -1,20 +1,17 @@
 <script>
     import SensorPage from "$lib/components/SensorPage.svelte";
     import Sidebar from "$lib/components/Sidebar.svelte";
+    import { getSensors } from "$lib/functions";
 
-    let ids = ["123", "213", "312", "412", "512"];
-    let selectedSensor = ids[0];
+    const sensorIds = getSensors();
+    let currentSensor = $state(sensorIds[0]);
 
-    const handleCpuClick = (id) => {
-        selectedSensor = id;
-        console.log("Selected Sensor:", id);
-    };
+    const onSensorClick = (sensorId) => (currentSensor = sensorId);
 </script>
 
 <div class="flex h-screen">
-    <Sidebar {ids} onCpuClick={handleCpuClick} />
-
+    <Sidebar {sensorIds} {currentSensor} {onSensorClick} />
     <div class="h-full w-full py-2 pr-2 pl-16">
-        <SensorPage {selectedSensor} />
+        <SensorPage sensor={currentSensor} />
     </div>
 </div>

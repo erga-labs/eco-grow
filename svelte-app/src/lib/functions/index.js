@@ -1,3 +1,3 @@
-import { getNutrientsForCrop } from "./nutrients";
-
-export { getNutrientsForCrop };
+export * from "./nutrients";
+export * from "./sensors";
+export * from "./crops";

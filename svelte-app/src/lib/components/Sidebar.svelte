@@ -2,23 +2,14 @@
     import SidebarItem from "./SidebarItem.svelte";
     import { CircleUserRound } from "@lucide/svelte";
 
-    export let ids = [];
-    export let onCpuClick;
-
-    let selectedId = null;
-
-    // Function to handle when a CPU is clicked
-    function handleCpuClick(id) {
-        selectedId = id; // Update the selected ID
-        onCpuClick(id); // Call the original click handler
-    }
+    const { sensorIds, currentSensor, onSensorClick } = $props();
 </script>
 
 <div class="fixed h-screen w-14 bg-red-300 px-2.5">
     <div class="flex h-full flex-col items-center justify-between py-4">
         <div class="flex flex-col gap-4">
-            {#each ids as id}
-                <SidebarItem {id} isSelected={id === selectedId} on:click={() => handleCpuClick(id)} />
+            {#each sensorIds as id}
+                <SidebarItem {id} isSelected={id === currentSensor} {onSensorClick} />
             {/each}
         </div>
         <div

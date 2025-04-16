@@ -120,7 +120,7 @@
     const yTicks = niceY.ticks(yScalefactor);
 </script>
 
-<div class="h-full w-full bg-amber-50">
+<div class="h-full bg-amber-50">
     <svg
         class="h-full w-full"
         viewBox="0 0 {width} {height}"

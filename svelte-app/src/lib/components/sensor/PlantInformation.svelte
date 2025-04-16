@@ -1,8 +1,25 @@
 <script>
-    import { getNutrientsForCrop } from "$lib/functions";
+    import { getCrops, getNutrientsForCrop, isOk } from "$lib/functions";
 
-    let selectedCrop = $state("Tomato");
-    let nutrients = $derived(getNutrientsForCrop(selectedCrop));
+    const { currentValues, currentCrop } = $props();
+    const allCrops = getCrops();
+
+    const makeData = (selectedCrop) => {
+        const optimalValues = getNutrientsForCrop(selectedCrop);
+        const _data = {};
+
+        for (const key in optimalValues) {
+            _data[key] = {
+                current: currentValues[key],
+                optimal: optimalValues[key],
+                ok: isOk(currentValues[key], optimalValues[key]),
+            };
+        }
+        return _data;
+    };
+
+    let selectedCrop = $state(allCrops[0]);
+    let data = $derived(makeData(selectedCrop));
 </script>
 
 <div class="w-full rounded-lg bg-gray-200 p-8">
@@ -12,14 +29,14 @@
         <div class="flex h-12 items-center justify-start gap-2">
             <div class="w-fit pr-4 text-lg font-semibold whitespace-nowrap">Choose Plant:</div>
             <select bind:value={selectedCrop} class="w-full max-w-40 rounded bg-green-200 px-4 py-2 text-center shadow">
-                {#each ["Tomato", "Apple"] as plant}
-                    <option value={plant}>{plant}</option>
+                {#each allCrops as crop}
+                    <option value={crop}>{crop}</option>
                 {/each}
             </select>
         </div>
 
         <div class="flex gap-3">
-            {#each Object.entries(nutrients) as [nutrientName, nutrientData]}
+            {#each Object.entries(data) as [nutrientName, nutrientData]}
                 <div class="h-auto grow">
                     <div
                         class={`h-full w-full rounded-xl border-3 text-center transition ${nutrientData.ok ? "border-emerald-500 bg-emerald-400" : "border-orange-500 bg-orange-400"} py-1`}

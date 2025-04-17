@@ -11,14 +11,14 @@
     const { currentCrop, currentValues } = getDataForSensor(sensor);
 </script>
 
-<div class="flex h-full w-full flex-col gap-2 overflow-auto rounded-lg bg-red-200 px-8 py-6">
+<div class="flex h-full w-full flex-col gap-2 overflow-auto rounded-lg bg-red-200 px-4 py-4 sm:px-6 md:px-8 md:py-6">
     <SensorInfo sensorId={sensor} isOnline={false} />
 
-    <div class="flex gap-4 md:flex-col md:gap-8 lg:flex-row">
-        <div class="w-1/2 rounded-lg md:w-full">
+    <div class="flex flex-col gap-4 lg:flex-row lg:gap-8">
+        <div class="w-full lg:w-1/2 rounded-lg">
             <GraphComponent />
         </div>
-        <div class="flex w-1/2 flex-col gap-8 md:w-full">
+        <div class="flex w-full flex-col gap-8 lg:w-1/2">
             <PlantInformation {currentCrop} {currentValues} />
             <CropRecommendation />
         </div>

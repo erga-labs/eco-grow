@@ -120,9 +120,9 @@
     const yTicks = niceY.ticks(yScalefactor);
 </script>
 
-<div class="h-full bg-amber-50">
+<div class="px-2 bg-amber-50 ">
     <svg
-        class="h-full w-full"
+        class=""
         viewBox="0 0 {width} {height}"
         on:mouseout={() => (dotInfo = null)}
         on:blur={() => (dotInfo = null)}

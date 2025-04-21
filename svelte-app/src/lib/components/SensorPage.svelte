@@ -15,7 +15,7 @@
     <SensorInfo sensorId={sensor} isOnline={false} />
 
     <div class="flex flex-col gap-4 lg:flex-row lg:gap-8">
-        <div class="w-full lg:w-1/2 rounded-lg">
+        <div class="w-full rounded-lg lg:w-1/2">
             <GraphComponent />
         </div>
         <div class="flex w-full flex-col gap-8 lg:w-1/2">

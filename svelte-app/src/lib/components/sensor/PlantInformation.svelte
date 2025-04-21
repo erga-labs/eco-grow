@@ -23,10 +23,8 @@
 
     $effect(async () => {
         allCrops = await getCrops();
-        console.log(allCrops);
         selectedCrop = allCrops.crops[0];
         data = await makeData(selectedCrop);
-        console.log(data);
     });
 </script>
 

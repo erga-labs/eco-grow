@@ -2,10 +2,9 @@
     import { getCrops, getNutrientsForCrop, isOk } from "$lib/functions";
 
     const { currentValues, currentCrop } = $props();
-    const allCropsPromise = getCrops();
 
-    const makeData = (selectedCrop) => {
-        const optimalValues = getNutrientsForCrop(selectedCrop);
+    const makeData = async (selectedCrop) => {
+        const optimalValues = await getNutrientsForCrop(selectedCrop);
         const _data = {};
 
         for (const key in optimalValues) {
@@ -18,11 +17,20 @@
         return _data;
     };
 
-    let selectedCrop = $state(allCropsPromise[0]);
-    let data = $derived(makeData(selectedCrop));
+    let selectedCrop = $state();
+    let allCrops = $state();
+    let data = $state();
+
+    $effect(async () => {
+        allCrops = await getCrops();
+        console.log(allCrops);
+        selectedCrop = allCrops.crops[0];
+        data = await makeData(selectedCrop);
+        console.log(data);
+    });
 </script>
 
-{#await allCropsPromise then allCrops}
+{#if data !== undefined}
     <div class="w-full rounded-lg bg-gray-200 p-4 sm:p-4 md:p-4">
         <h2 class="text-center text-lg font-bold">Plant Information</h2>
 
@@ -63,6 +71,4 @@
             </div>
         </div>
     </div>
-{:catch error}
-    <p style="color: red">{error.message}</p>
-{/await}
+{/if}

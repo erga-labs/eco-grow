@@ -6,10 +6,10 @@ export async function GET(req) {
     const pbResp = await pb.collection("mp_plant_info").getFirstListItem(`plant="${crop}"`);
 
     const nutrients = {
-        nitrogen: pbResp.nitrogen.max,
-        potassium: pbResp.potassium.max,
-        phosphorus: pbResp.phosphorus.max,
-        moisture: pbResp.moisture.max,
+        nitrogen: pbResp.nitrogen,
+        potassium: pbResp.potassium,
+        phosphorus: pbResp.phosphorus,
+        moisture: pbResp.moisture,
     };
 
     return json(nutrients);

@@ -1,17 +1,18 @@
 <script>
     import { getCrops, getNutrientsForCrop, isOk } from "$lib/functions";
+    import { select } from "d3";
 
     const { currentValues, currentCrop } = $props();
 
     const makeData = async (selectedCrop) => {
-        const optimalValues = await getNutrientsForCrop(selectedCrop);
+        const rangeValues = await getNutrientsForCrop(selectedCrop);
         const _data = {};
 
-        for (const key in optimalValues) {
+        for (const key in rangeValues) {
             _data[key] = {
                 current: currentValues[key],
-                optimal: optimalValues[key],
-                ok: isOk(currentValues[key], optimalValues[key]),
+                optimal: (rangeValues[key].max + rangeValues[key].min) / 2,
+                ok: isOk(currentValues[key], rangeValues[key]),
             };
         }
         return _data;
@@ -23,8 +24,15 @@
 
     $effect(async () => {
         allCrops = await getCrops();
-        selectedCrop = allCrops.crops[0];
-        data = await makeData(selectedCrop);
+        const crop = allCrops.crops[0];
+        data = await makeData(crop);
+        selectedCrop = crop;
+    });
+
+    $effect(async () => {
+        if (selectedCrop !== undefined) {
+            data = await makeData(selectedCrop);
+        }
     });
 </script>
 

@@ -4,6 +4,6 @@ export const getCrops = async (event) => {
     return respJson;
 };
 
-export const isOk = (current, optimal) => {
-    return Math.random() > 0.5;
+export const isOk = (current, { max, min }) => {
+    return current >= min && current <= max;
 };

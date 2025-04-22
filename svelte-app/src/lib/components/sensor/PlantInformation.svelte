@@ -1,6 +1,6 @@
 <script>
     import { getCrops, getNutrientsForCrop, isOk } from "$lib/functions";
-    import { select } from "d3";
+    import { onMount } from "svelte";
 
     const { currentValues, currentCrop } = $props();
 
@@ -18,16 +18,16 @@
         return _data;
     };
 
-    let selectedCrop = $state();
-    let allCrops = $state();
-    let data = $state();
-
-    $effect(async () => {
+    onMount(async () => {
         allCrops = await getCrops();
         const crop = allCrops.crops[0];
         data = await makeData(crop);
         selectedCrop = crop;
     });
+
+    let selectedCrop = $state();
+    let allCrops = $state();
+    let data = $state();
 
     $effect(async () => {
         if (selectedCrop !== undefined) {

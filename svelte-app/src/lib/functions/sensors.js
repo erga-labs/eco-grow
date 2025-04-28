@@ -7,7 +7,7 @@ export const getDataForSensor = (sensorId) => {
         currentCrop: "Tomato",
         currentValues: {
             nitrogen: 100,
-            pottasium: 100,
+            potassium: 100,
             phosphorus: 100,
             moisture: 100,
         },

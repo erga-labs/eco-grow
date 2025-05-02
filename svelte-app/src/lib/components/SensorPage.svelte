@@ -3,6 +3,7 @@
     import PlantInformation from "$lib/components/sensor/PlantInformation.svelte";
     import CropRecommendation from "$lib/components/sensor/CropRecommendation.svelte";
     import SensorInfo from "./sensor/SensorInfo.svelte";
+    import DiseaseClassification from "./sensor/DiseaseClassification.svelte";
     import { getDataForSensor } from "$lib/functions";
     import Logs from "./Logs.svelte";
 
@@ -12,17 +13,20 @@
     const { currentCrop, currentValues } = getDataForSensor(sensor);
 </script>
 
-<div class="flex h-full w-full flex-col gap-2 overflow-auto rounded-lg bg-red-200 px-4 py-4 sm:px-6 md:px-8 md:py-6">
-    <SensorInfo sensorId={sensor} isOnline={false} />
+<div
+    class="flex h-full w-full flex-col gap-2 overflow-auto rounded-lg bg-[#E5E5E5] px-4 py-4 text-[#040316] sm:px-6 md:px-8 md:py-6"
+>
+    <SensorInfo sensorId={sensor} isOnline={true} />
 
     <div class="flex flex-col gap-4 lg:flex-row lg:gap-8">
-        <div class="flex w-full flex-col gap-8 rounded-lg lg:w-1/2">
+        <div class="flex w-full flex-col gap-8 rounded-lg bg-[#ABD3BB] p-4 lg:w-1/2">
             <GraphComponent />
             <Logs />
         </div>
-        <div class="flex w-full flex-col gap-8 lg:w-1/2">
+        <div class="flex w-full flex-col gap-8 rounded-lg bg-[#ABD3BB] p-4 lg:w-1/2">
             <PlantInformation {currentCrop} {currentValues} />
             <CropRecommendation />
+            <DiseaseClassification />
         </div>
     </div>
 </div>

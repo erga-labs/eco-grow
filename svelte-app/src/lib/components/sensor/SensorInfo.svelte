@@ -4,9 +4,9 @@
     let { sensorId, isOnline } = $props();
 </script>
 
-<div class={`${isOnline ? "bg-green-300" : "bg-red-300"} flex h-12 items-center justify-center gap-4 rounded-md p-2`}>
+<div class={`${isOnline ? "bg-[#ABD3BB]" : "bg-[#BA181B]"} flex h-12 items-center justify-center gap-4 rounded-md p-2`}>
     <Cpu />
-    <p class={`font-bold ${isOnline ? "text-green-800" : "text-red-800"} text-xl`}>
+    <p class={`font-bold ${isOnline ? "text-[#276252]" : "text-white"} text-xl`}>
         Sensor ID: {sensorId}
     </p>
 </div>

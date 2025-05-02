@@ -1,5 +1,5 @@
 export const getSensors = () => {
-    return ["ABC-123", "DEF-456", "GHI-789"];
+    return ["ABC-123"];
 };
 
 export const getDataForSensor = (sensorId) => {

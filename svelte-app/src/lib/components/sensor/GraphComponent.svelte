@@ -35,11 +35,11 @@
     const curve = curveLinear; // method of interpolation between points
     const xType = scaleUtc; // type of x-scale
 
-// Function to format time as hours ago
-function formatTimeAgo(date) {
-    const hoursAgo = Math.round((new Date() - date) / (1000000*60*8 * 60 * 60));
-    return hoursAgo + "hr" + (hoursAgo !== 1 ? "s" : "") + " ago";
-}
+    // Function to format time as hours ago
+    function formatTimeAgo(date) {
+        const hoursAgo = Math.round((new Date() - date) / (1000000 * 60 * 8 * 60 * 60));
+        return hoursAgo + "hr" + (hoursAgo !== 1 ? "s" : "") + " ago";
+    }
     const insetTop = inset; // inset from top
     const insetRight = inset; // inset from right
     const insetBottom = inset; // inset fro bottom
@@ -50,7 +50,7 @@ function formatTimeAgo(date) {
 
     // Initialize dotInfo as null
     let dotInfo = null;
-    
+
     let x,
         y,
         areas,
@@ -125,17 +125,17 @@ function formatTimeAgo(date) {
 
     const xTicks = xScale.ticks(xScalefactor);
     // Format time as hours ago
-const xTicksFormatted = xTicks.map((date) => {
-    const hoursAgo = Math.round((new Date() - date) / (1000 * 60 * 60));
-    return hoursAgo + "hr" + (hoursAgo !== 1 ? "s" : "") + " ago";
-});
+    const xTicksFormatted = xTicks.map((date) => {
+        const hoursAgo = Math.round((new Date() - date) / (1000 * 60 * 60));
+        return hoursAgo + "hr" + (hoursAgo !== 1 ? "s" : "") + " ago";
+    });
     const yTicks = niceY.ticks(yScalefactor);
-    
+
     // Function to handle mouse over events
     function handleMouseOver(point, i, event) {
         dotInfo = [point, i, event];
     }
-    
+
     // Function to handle mouse out events
     function handleMouseOut() {
         dotInfo = null;
@@ -143,13 +143,7 @@ const xTicksFormatted = xTicks.map((date) => {
 </script>
 
 <div class="bg-amber-50 px-2">
-    <svg
-        class=""
-        viewBox="0 0 {width} {height}"
-        on:mouseout={handleMouseOut}
-        on:blur={handleMouseOut}
-        role="img"
-    >
+    <svg class="" viewBox="0 0 {width} {height}" on:mouseout={handleMouseOut} on:blur={handleMouseOut} role="img">
         <!-- Dots -->
         {#if showDots && !dotInfo}
             {#each I as i}
@@ -222,7 +216,7 @@ const xTicksFormatted = xTicks.map((date) => {
                     {#if verticalGrid}
                         <line y2={-height} class="stroke-black opacity-20" />
                     {/if}
-                    <text x={-marginLeft / 4} y="20" class="text-black">{   xFormat}</text>
+                    <text x={-marginLeft / 4} y="20" class="text-black">{xFormat}</text>
                 </g>
             {/each}
             <text x={width - marginLeft - marginRight - 40} y={marginBottom} class="text-black">{xLabel}</text>

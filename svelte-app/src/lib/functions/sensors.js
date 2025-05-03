@@ -6,10 +6,10 @@ export const getDataForSensor = (sensorId) => {
     return {
         currentCrop: "Tomato",
         currentValues: {
-            nitrogen: 100,
-            potassium: 100,
-            phosphorus: 100,
-            moisture: 100,
+            nitrogen: 73,
+            potassium: 67,
+            phosphorus: 80,
+            moisture: 50,
         },
     };
 };

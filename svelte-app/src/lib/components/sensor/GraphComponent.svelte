@@ -15,9 +15,9 @@
     const width = 599; // the outer width of the chart, in pixels
     const height = 350; // the outer height of the chart, in pixels
     const xLabel = ""; // a label for the y-axis
-    const yLabel = "↑ Population (in millions)"; // a label for the y-axis
+    const yLabel = "↑ Sensor Data"; // a label for the y-axis
     const xFormat = ""; // a format specifier string for the y-axis
-    const yFormat = "m"; // a format specifier string for the y-axis
+    const yFormat = "mg/kg"; // a format specifier string for the y-axis
     const horizontalGrid = false; // show horizontal grid lines
     const verticalGrid = false; // show vertical grid lines
     const colors = ["red", "blue", "green", "yellow"]; // fill color for dots && number of colors in fill array MUST match number of subsets in data
@@ -34,6 +34,12 @@
     const yScalefactor = height / 40; //y-axis number of values
     const curve = curveLinear; // method of interpolation between points
     const xType = scaleUtc; // type of x-scale
+
+// Function to format time as hours ago
+function formatTimeAgo(date) {
+    const hoursAgo = Math.round((new Date() - date) / (1000000*60*8 * 60 * 60));
+    return hoursAgo + "hr" + (hoursAgo !== 1 ? "s" : "") + " ago";
+}
     const insetTop = inset; // inset from top
     const insetRight = inset; // inset from right
     const insetBottom = inset; // inset fro bottom
@@ -42,9 +48,11 @@
     const yType = scaleLinear; // type of y-scale
     const yRange = [height - marginBottom - insetBottom, marginTop + insetTop]; // [bottom, top]
 
+    // Initialize dotInfo as null
+    let dotInfo = null;
+    
     let x,
         y,
-        dotInfo,
         areas,
         filteredI,
         xVals = [],
@@ -116,16 +124,30 @@
     const voronoiGrid = delaunayGrid.voronoi([0, 0, width, height]);
 
     const xTicks = xScale.ticks(xScalefactor);
-    const xTicksFormatted = xTicks.map((el) => el.getFullYear());
+    // Format time as hours ago
+const xTicksFormatted = xTicks.map((date) => {
+    const hoursAgo = Math.round((new Date() - date) / (1000 * 60 * 60));
+    return hoursAgo + "hr" + (hoursAgo !== 1 ? "s" : "") + " ago";
+});
     const yTicks = niceY.ticks(yScalefactor);
+    
+    // Function to handle mouse over events
+    function handleMouseOver(point, i, event) {
+        dotInfo = [point, i, event];
+    }
+    
+    // Function to handle mouse out events
+    function handleMouseOut() {
+        dotInfo = null;
+    }
 </script>
 
 <div class="bg-amber-50 px-2">
     <svg
         class=""
         viewBox="0 0 {width} {height}"
-        on:mouseout={() => (dotInfo = null)}
-        on:blur={() => (dotInfo = null)}
+        on:mouseout={handleMouseOut}
+        on:blur={handleMouseOut}
         role="img"
     >
         <!-- Dots -->
@@ -200,7 +222,7 @@
                     {#if verticalGrid}
                         <line y2={-height} class="stroke-black opacity-20" />
                     {/if}
-                    <text x={-marginLeft / 4} y="20" class="text-black">{xTicksFormatted[i] + xFormat}</text>
+                    <text x={-marginLeft / 4} y="20" class="text-black">{   xFormat}</text>
                 </g>
             {/each}
             <text x={width - marginLeft - marginRight - 40} y={marginBottom} class="text-black">{xLabel}</text>
@@ -212,8 +234,8 @@
                 d={voronoiGrid.renderCell(i)}
                 stroke="none"
                 fill-opacity="0"
-                on:mouseover={(e) => (dotInfo = [point, i, e])}
-                on:focus={(e) => (dotInfo = [point, i, e])}
+                on:mouseover={(e) => handleMouseOver(point, i, e)}
+                on:focus={(e) => handleMouseOver(point, i, e)}
                 role="button"
                 tabindex="0"
             />
@@ -221,6 +243,7 @@
     </svg>
 </div>
 
+<!-- Tooltip -->
 {#if dotInfo}
     <div
         class="fixed z-50 rounded-md px-2 py-1 text-sm shadow-lg"
@@ -233,6 +256,6 @@
       "
     >
         {subsets ? subsets[points[dotInfo[1]].color] : ""}:
-        {points[dotInfo[1]].x.getFullYear()}: {points[dotInfo[1]].y.toFixed(2)}{yFormat}
+        {formatTimeAgo(points[dotInfo[1]].x)}: {points[dotInfo[1]].y.toFixed(2)}{yFormat}
     </div>
 {/if}

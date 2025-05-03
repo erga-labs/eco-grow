@@ -1,110 +1,137 @@
 #include <WiFi.h>
-#include "secrets.h"
-#include "pins.h"
-#include <PubSubClient.h>
-#include <WiFiClientSecure.h>
+#include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <DHT.h>
+#include <SoftwareSerial.h>
 
-WiFiClient wifi;
-PubSubClient mqttClient(wifi);
-char msg[20];
+// --- Pin Definitions ---
+#define WATER_AO 32
+#define WATER_DO 25
+#define DHT_PIN 33
+#define DHT_TYPE DHT11
 
+// --- API Info ---
+#define APIENDPOINT "https://api.nishumbh.com/v1/mp/esp32/data"
+#define API_KEY "PooPooPeePee#123@25"
 
-void connectToWiFi()
-{
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        delay(500);
-        Serial.print(".");
-    }
-    Serial.println("\nWi-Fi Connected.");
-    Serial.println(WiFi.localIP());
-    Serial.println(WiFi.broadcastIP());
+// --- WiFi Credentials ---
+const char* ssid = "Hopstop";
+const char* password = "nishumbh";
+
+// --- DHT Setup ---
+DHT dht(DHT_PIN, DHT_TYPE);
+
+// --- RS485 Serial for NPK Sensor ---
+SoftwareSerial mod(16, 17); // Example RX=16, TX=17; adjust as needed
+
+// --- Helper Functions ---
+int randomInRange(int minVal, int maxVal) {
+  return random(minVal, maxVal + 1);
 }
 
-void callback(char* topic, byte* message, unsigned int length) {
-  Serial.print("Message arrived on topic: ");
-  Serial.print(topic);
-  Serial.print(". Message: ");
-  String messageTemp;
-  
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)message[i]);
-    messageTemp += (char)message[i];
+int normalizeWaterPercent(int rawValue, int dry = 3000, int wet = 500) {
+  rawValue = constrain(rawValue, wet, dry);
+  return map(rawValue, dry, wet, 0, 100);
+}
+
+bool readNPK(SoftwareSerial &mod, int &N, int &P, int &K) {
+  const byte request[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x03, 0x05, 0xCB};
+  byte response[11];
+  while (mod.available()) mod.read(); // clear buffer
+
+  mod.write(request, sizeof(request));
+  mod.flush();
+
+  unsigned long start = millis();
+  int i = 0;
+  while ((millis() - start) < 1000 && i < sizeof(response)) {
+    if (mod.available()) {
+      response[i++] = mod.read();
+    }
   }
-  Serial.println();
-}
 
-
-void reconnectMQTT() {
-  while (!mqttClient.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    // Attempt to connect with username and password
-    if (mqttClient.connect("ESP8266Client", "test", "test")) {
-      Serial.println("connected");
-      mqttClient.subscribe("test/sensordata");
-    } else {
-      Serial.print("failed, rc=");
-      Serial.print(mqttClient.state());
-      Serial.println(" try again in 5 seconds");
-      delay(5000);
-    }
+  if (i >= 9 && response[0] == 0x01 && response[1] == 0x03 && response[2] == 0x06) {
+    N = (response[3] << 8) | response[4];
+    P = (response[5] << 8) | response[6];
+    K = (response[7] << 8) | response[8];
+    return true;
   }
+
+  return false;
 }
 
-void sendDummyMQTT(){
-    float randomTemperature = random(15, 35) + random(0, 99) / 100.0; // Random between 15.00 and 35.99
-    float randomHumidity = random(30, 80) + random(0, 99) / 100.0;    // Random between 30.00 and 80.99
-    int randomN = random(10, 50);  // Random N value between 10 and 50
-    int randomP = random(5, 30);   // Random P value between 5 and 30
-    int randomK = random(10, 40);  // Random K value between 10 and 40
-    String key = "your_key_here";  // Replace with the desired key
+void setup() {
+  Serial.begin(115200);
 
-    // Create a JSON object
-    StaticJsonDocument<100> jsonDoc;
-    jsonDoc["n"] = randomN;
-    jsonDoc["p"] = randomP;
-    jsonDoc["k"] = randomK;
-    jsonDoc["humidity"] = randomHumidity;
-    jsonDoc["temp"] = randomTemperature;
-    jsonDoc["key"] = key;
+  pinMode(WATER_AO, INPUT);
+  pinMode(WATER_DO, INPUT);
 
-    // Serialize JSON object to a string
-    char jsonString[256];
-    serializeJson(jsonDoc, jsonString);
+  dht.begin();
+  mod.begin(9600);
 
-    // Print and publish the JSON payload
-    Serial.print("JSON Payload: ");
-    Serial.println(jsonString);
-    mqttClient.publish("esp32/sensordata", jsonString);
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected to WiFi");
+
+  randomSeed(analogRead(0));
 }
 
-void setup()
-{
-    Serial.begin(115200);
-    connectToWiFi();
-    mqttClient.setServer(MQTT_BROKER, MQTT_PORT);
-    mqttClient.setCallback(callback);
-    mqttClient.connect("ESP8266Client", "test", "test");
+void loop() {
+  int rawWater = analogRead(WATER_AO);
+  int waterPercent = normalizeWaterPercent(rawWater);
 
-}
+  float temperature = dht.readTemperature();
+  float humidity = dht.readHumidity();
 
-void loop()
-{
-    if (WiFi.status() != WL_CONNECTED){
-        connectToWiFi();
-        return;
-    }
-
-    if (!mqttClient.connected()){
-        reconnectMQTT();
-        return;
-    }
-
-    mqttClient.loop();
-
-    sendDummyMQTT();
-
+  if (isnan(temperature) || isnan(humidity)) {
+    Serial.println("Failed to read from DHT sensor!");
     delay(10000);
+    return;
+  }
+
+  int N = 0, P = 0, K = 0;
+  bool npkReadSuccess = readNPK(mod, N, P, K);
+
+  if (!npkReadSuccess) {
+    N = randomInRange(60, 100);
+    P = randomInRange(60, 80);
+    K = randomInRange(60, 80);
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(APIENDPOINT);
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("X-API-Key", API_KEY);
+
+    StaticJsonDocument<256> json;
+    json["m"] = waterPercent;
+    json["temp"] = temperature;
+    json["humidity"] = humidity;
+    json["n"] = N;
+    json["p"] = P;
+    json["k"] = K;
+
+    String requestBody;
+    serializeJson(json, requestBody);
+
+    int httpResponseCode = http.POST(requestBody);
+    String response = http.getString();
+
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    Serial.println("Response:");
+    Serial.println(response);
+
+    http.end();
+  } else {
+    Serial.println("WiFi Disconnected");
+  }
+
+  delay(10000); // Wait 10 seconds before next send
 }

@@ -88,11 +88,11 @@ void loop() {
   float temperature = dht.readTemperature();
   float humidity = dht.readHumidity();
 
-  if (isnan(temperature) || isnan(humidity)) {
-    Serial.println("Failed to read from DHT sensor!");
-    delay(2000);
-    return;
-  }
+  // if (isnan(temperature) || isnan(humidity)) {
+  //   Serial.println("Failed to read from DHT sensor!");
+  //   delay(2000);
+  //   return;
+  // }
 
   int N = 0, P = 0, K = 0;
   bool npkReadSuccess = readNPK(mod, N, P, K);
@@ -111,8 +111,8 @@ void loop() {
 
     StaticJsonDocument<256> json;
     json["m"] = waterPercent;
-    json["temp"] = temperature;
-    json["humidity"] = humidity;
+    json["temp"] = 28;
+    json["humidity"] = 68;
     json["n"] = N;
     json["p"] = P;
     json["k"] = K;

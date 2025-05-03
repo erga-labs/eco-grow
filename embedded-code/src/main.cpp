@@ -90,7 +90,7 @@ void loop() {
 
   if (isnan(temperature) || isnan(humidity)) {
     Serial.println("Failed to read from DHT sensor!");
-    delay(10000);
+    delay(2000);
     return;
   }
 
@@ -133,5 +133,5 @@ void loop() {
     Serial.println("WiFi Disconnected");
   }
 
-  delay(10000); // Wait 10 seconds before next send
+  delay(4000); // Wait 10 seconds before next send
 }

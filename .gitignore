@@ -1,2 +1,5 @@
 ml-models/dataset/
 ml-models/saved-models/
+svelte-app/node_modules/
+svelte-app/.svelte-kit/
+svelte-app/.env
